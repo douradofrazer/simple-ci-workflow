@@ -1,5 +1,11 @@
 version: 2.1
 
+commands:
+  print_pipeline_id:
+    description: "A very simple command for demonstration purposes that prints pipeline id"
+    steps:
+      - run: echo ${CIRCLE_WORKFLOW_ID}
+
 jobs:
   # print_hello:
   #   docker: 
@@ -16,22 +22,28 @@ jobs:
   #     - image: circleci/node:13.8.0
   #   steps:
   #     - run: echo "My undercover name is ${TEST_VAR}"
-  save_hello_world_output:
+  # save_hello_world_output:
+  #   docker: 
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - run: echo "Hello, world!" > ~/output.txt
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - output.txt
+  # print_output_file:
+  #   docker: 
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run: cat ~/output.txt
+  print_pipeline:
     docker: 
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "Hello, world!" > ~/output.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - output.txt
-  print_output_file:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/output.txt
+      - print_pipeline_id
+
 
 workflows:
   starter-jobs:
@@ -41,7 +53,8 @@ workflows:
       #     requires: 
       #       - print_hello
       # - print_var
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+      # - save_hello_world_output
+      # - print_output_file:
+      #     requires:
+      #       - save_hello_world_output
+      - print_pipeline
